@@ -8,18 +8,65 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Object",
+"class": "Puyo",
+"language": "GDScript",
+"path": "res://src/puyo.gd"
+}, {
+"base": "Object",
+"class": "PuyoBoard",
+"language": "GDScript",
+"path": "res://src/PuyoBoard.gd"
+} ]
+_global_script_class_icons={
+"Puyo": "",
+"PuyoBoard": ""
+}
+
 [application]
 
 config/name="Puyio"
+run/main_scene="res://Scenes/MainMenu.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+GameConfig="*res://src/GameConfig.gd"
 
 [display]
 
 window/size/width=1280
 window/size/height=720
-window/size/borderless=true
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
+
+[global]
+
+titlebar=false
+
+[input]
+
+move_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777231,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777233,"unicode":0,"echo":false,"script":null)
+ ]
+}
+soft_drop={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777234,"unicode":0,"echo":false,"script":null)
+ ]
+}
+hard_drop={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":32,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [physics]
 
