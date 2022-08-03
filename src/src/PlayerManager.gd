@@ -28,7 +28,13 @@ func _process(delta):
 	
 func _input(event):
 	if event.is_action_pressed("move_left"):
-		player_board.try_move_left()
+		player_board.process_input("move_left")
 	if event.is_action_pressed("move_right"):
-		player_board.try_move_right()
+		player_board.process_input("move_right")
+	if event.is_action_pressed("soft_drop"):
+		player_board.process_input("soft_drop")
+	if event.is_action_pressed("hard_drop"):
+		player_board.process_input("hard_drop")
+	if event.is_action_pressed("rot_cw"):
+		player_board.process_input("rot_cw")
 	pass

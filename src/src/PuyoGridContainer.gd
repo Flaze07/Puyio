@@ -114,3 +114,86 @@ func try_move_right():
 	
 	dynamic_puyo.position1.x += 1
 	dynamic_puyo.position2.x += 1
+	
+func try_soft_drop():
+	if not can_go_down():
+		return
+	clear_dynamic_puyo()
+	
+	dynamic_puyo.position1.y += 1
+	dynamic_puyo.position2.y += 1
+
+func try_hard_drop():
+	#handle if both are on different column
+	if dynamic_puyo.position1.x != dynamic_puyo.position2.x:
+		var check_pos1 = dynamic_puyo.position1
+		
+		check_pos1.y += 1
+		while puyo_board.get_value_vec2(check_pos1) == 0 \
+				and puyo_board.get_value_vec2(check_pos1) != null:
+			check_pos1.y += 1
+			
+		var check_pos2 = dynamic_puyo.position2.y
+		
+		check_pos2.y ++ 1
+		while puyo_board.get_value_vec2(check_pos2) == 0 \
+				and puyo_board.get_value_vec2(check_pos2) != null:
+			check_pos2.y += 1
+		
+		clear_dynamic_puyo()
+		dynamic_puyo.position1.y = check_pos1.y - 1
+		dynamic_puyo.position2.y = check_pos2.y - 1
+		
+	#handle if they're on the same column
+	else:
+		var check_pos: Vector2
+		if dynamic_puyo.position1.y < dynamic_puyo.position2.y:
+			check_pos = dynamic_puyo.position2
+		else:
+			check_pos = dynamic_puyo.position1
+		
+		check_pos.y += 1
+		print(puyo_board.get_value_vec2(check_pos))
+		while (puyo_board.get_value_vec2(check_pos) == 0 
+				and puyo_board.get_value_vec2(check_pos) != null):
+			check_pos.y += 1
+		
+		clear_dynamic_puyo()
+		if dynamic_puyo.position1.y < dynamic_puyo.position2.y:
+			dynamic_puyo.position2.y = check_pos.y - 1
+			dynamic_puyo.position1.y = check_pos.y - 2
+		else:
+			dynamic_puyo.position1.y = check_pos.y - 1
+			dynamic_puyo.position2.y = check_pos.y - 2
+
+func try_rot_cw():
+	clear_dynamic_puyo()
+	#if they're in the same column
+	if dynamic_puyo.position1.x == dynamic_puyo.position2.x:
+		if dynamic_puyo.position1.y > dynamic_puyo.position2.y:
+			dynamic_puyo.position2.x += 1
+			dynamic_puyo.position2.y += 1
+		else:
+			dynamic_puyo.position2.x -= 1
+			dynamic_puyo.position2.y -= 1
+	#if they're not in the same column
+	else:
+		if dynamic_puyo.position1.x > dynamic_puyo.position2.x:
+			dynamic_puyo.position2.y -= 1
+			dynamic_puyo.position2.x += 1
+		else:
+			dynamic_puyo.position2.y += 1
+			dynamic_puyo.position2.x -= 1
+
+func process_input(event):
+	match event:
+		"move_left":
+			try_move_left()
+		"move_right":
+			try_move_right()
+		"soft_drop":
+			try_soft_drop()
+		"hard_drop":
+			try_hard_drop()
+		"rot_cw":
+			try_rot_cw()
