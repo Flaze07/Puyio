@@ -184,6 +184,30 @@ func try_rot_cw():
 		else:
 			dynamic_puyo.position2.y += 1
 			dynamic_puyo.position2.x -= 1
+	
+func try_rot_ccw():
+	clear_dynamic_puyo()
+	#if they're in the same column
+	if dynamic_puyo.position1.x == dynamic_puyo.position2.x:
+		if dynamic_puyo.position1.y > dynamic_puyo.position2.y:
+			dynamic_puyo.position2.x -= 1
+			dynamic_puyo.position2.y += 1
+		else:
+			dynamic_puyo.position2.x += 1
+			dynamic_puyo.position2.y -= 1
+	#if they're not in the same column
+	else:
+		if dynamic_puyo.position1.x > dynamic_puyo.position2.x:
+			dynamic_puyo.position2.y += 1
+			dynamic_puyo.position2.x += 1
+		else:
+			dynamic_puyo.position2.y -= 1
+			dynamic_puyo.position2.x -= 1
+
+func try_rot_180():
+	var temp = dynamic_puyo.position1
+	dynamic_puyo.position1 = dynamic_puyo.position2
+	dynamic_puyo.position2 = temp
 
 func process_input(event):
 	match event:
@@ -197,3 +221,7 @@ func process_input(event):
 			try_hard_drop()
 		"rot_cw":
 			try_rot_cw()
+		"rot_ccw":
+			try_rot_ccw()
+		"rot_180":
+			try_rot_180()

@@ -37,4 +37,8 @@ func _input(event):
 		player_board.process_input("hard_drop")
 	if event.is_action_pressed("rot_cw"):
 		player_board.process_input("rot_cw")
+	if event.is_action_pressed("rot_ccw"):
+		player_board.process_input("rot_ccw")
+	if event.is_action_pressed("rot_180"):
+		player_board.process_input("rot_180")
 	pass
