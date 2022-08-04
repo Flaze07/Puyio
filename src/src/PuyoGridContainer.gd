@@ -93,14 +93,12 @@ func try_move_left():
 	if puyo_board.get_value_vec2(puyo_pos) != 0 or puyo_board.get_value_vec2(puyo_pos) == null:
 		return
 	
-	clear_dynamic_puyo()
-	
 	dynamic_puyo.position1.x -= 1
 	dynamic_puyo.position2.x -= 1
 
 func try_move_right():
 	var puyo_pos: Vector2
-	if dynamic_puyo.position1.x < dynamic_puyo.position2.x:
+	if dynamic_puyo.position1.x > dynamic_puyo.position2.x:
 		puyo_pos = dynamic_puyo.position1
 	else:
 		puyo_pos = dynamic_puyo.position2
@@ -110,15 +108,12 @@ func try_move_right():
 	if puyo_board.get_value_vec2(puyo_pos) != 0 or puyo_board.get_value_vec2(puyo_pos) == null:
 		return
 	
-	clear_dynamic_puyo()
-	
 	dynamic_puyo.position1.x += 1
 	dynamic_puyo.position2.x += 1
 	
 func try_soft_drop():
 	if not can_go_down():
 		return
-	clear_dynamic_puyo()
 	
 	dynamic_puyo.position1.y += 1
 	dynamic_puyo.position2.y += 1
@@ -140,7 +135,6 @@ func try_hard_drop():
 				and puyo_board.get_value_vec2(check_pos2) != null:
 			check_pos2.y += 1
 		
-		clear_dynamic_puyo()
 		dynamic_puyo.position1.y = check_pos1.y - 1
 		dynamic_puyo.position2.y = check_pos2.y - 1
 		
@@ -158,7 +152,6 @@ func try_hard_drop():
 				and puyo_board.get_value_vec2(check_pos) != null):
 			check_pos.y += 1
 		
-		clear_dynamic_puyo()
 		if dynamic_puyo.position1.y < dynamic_puyo.position2.y:
 			dynamic_puyo.position2.y = check_pos.y - 1
 			dynamic_puyo.position1.y = check_pos.y - 2
@@ -167,13 +160,26 @@ func try_hard_drop():
 			dynamic_puyo.position2.y = check_pos.y - 2
 
 func try_rot_cw():
-	clear_dynamic_puyo()
 	#if they're in the same column
 	if dynamic_puyo.position1.x == dynamic_puyo.position2.x:
+		var check_right = puyo_board.get_value(dynamic_puyo.position1.x+1, dynamic_puyo.position1.y)
+		var check_left = puyo_board.get_value(dynamic_puyo.position1.x-1, dynamic_puyo.position1.y)
 		if dynamic_puyo.position1.y > dynamic_puyo.position2.y:
+			if check_right != 0 and check_right == null:
+				if check_left != 0 and check_left == null:
+					return
+				dynamic_puyo.position1.x -= 1
+				dynamic_puyo.position2.x -= 1
+			
 			dynamic_puyo.position2.x += 1
 			dynamic_puyo.position2.y += 1
 		else:
+			if check_left != 0 and check_left == null:
+				if check_right != 0 and check_right == null:
+					return
+				dynamic_puyo.position1.x += 1
+				dynamic_puyo.position2.x += 1
+				
 			dynamic_puyo.position2.x -= 1
 			dynamic_puyo.position2.y -= 1
 	#if they're not in the same column
@@ -182,14 +188,27 @@ func try_rot_cw():
 			dynamic_puyo.position2.y -= 1
 			dynamic_puyo.position2.x += 1
 		else:
+			var check = puyo_board.get_value(dynamic_puyo.position1.x, dynamic_puyo.position1.y+1)
+			if check != 0 and check == null:
+				dynamic_puyo.position1.y -= 1
+				dynamic_puyo.position2.y -= 1
+				
 			dynamic_puyo.position2.y += 1
 			dynamic_puyo.position2.x -= 1
 	
 func try_rot_ccw():
-	clear_dynamic_puyo()
 	#if they're in the same column
 	if dynamic_puyo.position1.x == dynamic_puyo.position2.x:
+		var check_right = puyo_board.get_value(dynamic_puyo.position1.x+1, dynamic_puyo.position1.y)
+		var check_left = puyo_board.get_value(dynamic_puyo.position1.x-1, dynamic_puyo.position1.y)
+		
 		if dynamic_puyo.position1.y > dynamic_puyo.position2.y:
+			if check_left != 0 and check_left == null:
+				if check_right != 0 and check_right == null:
+					return
+				dynamic_puyo.position1.x += 1
+				dynamic_puyo.position2.x += 1
+				
 			dynamic_puyo.position2.x -= 1
 			dynamic_puyo.position2.y += 1
 		else:
@@ -198,6 +217,11 @@ func try_rot_ccw():
 	#if they're not in the same column
 	else:
 		if dynamic_puyo.position1.x > dynamic_puyo.position2.x:
+			var check = puyo_board.get_value(dynamic_puyo.position1.x, dynamic_puyo.position1.y+1)
+			if check != 0 and check == null:
+				dynamic_puyo.position1.y -= 1
+				dynamic_puyo.position2.y -= 1
+				
 			dynamic_puyo.position2.y += 1
 			dynamic_puyo.position2.x += 1
 		else:
@@ -210,6 +234,7 @@ func try_rot_180():
 	dynamic_puyo.position2 = temp
 
 func process_input(event):
+	clear_dynamic_puyo()
 	match event:
 		"move_left":
 			try_move_left()
