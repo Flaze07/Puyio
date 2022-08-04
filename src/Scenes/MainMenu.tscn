@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Font/AmongYou-BWdWw.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://src/MainButton.gd" type="Script" id=2]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.796078, 0.972549, 0.964706, 1 )
@@ -47,3 +48,4 @@ margin_right = 830.0
 margin_bottom = 386.0
 custom_fonts/font = SubResource( 1 )
 text = "Play"
+script = ExtResource( 2 )
