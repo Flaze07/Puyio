@@ -26,7 +26,17 @@ func get_value(x, y):
 
 func get_value_vec2(coord: Vector2):
 	return get_value(coord.x, coord.y)
-	
+
+func is_valid_or_empty(x, y):
+	if x < 0 or x >= col:
+		return false
+	if y < 0 or y >= row:
+		return false
+	return board[x + (y * col)] == 0
+
+func is_valid_or_empty_vec2(coord: Vector2):
+	return is_valid_or_empty(coord.x, coord.y)
+
 func set_value(x, y, val) -> bool:
 	if x < 0 or x >= col:
 		return false
